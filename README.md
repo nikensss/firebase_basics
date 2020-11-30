@@ -37,3 +37,67 @@ If we were to print _firebase_ to the log from **app.js**, we should be able to
 see something in the console:
 
 `console.log(firebase)`
+
+## 4 Install Firebase CLI
+
+It is also recommended to install the VS Code extension _Firebase Explorer_.
+
+```
+npm i -g firebase-tools
+firebase login
+firebase init
+```
+
+When initializing firebase, it will ask what features to use: for the moment,
+let's just choose hosting and emulators. When asked about which emulators, for
+the moment just choose hosting and the default options that come for the
+subsequent questions.
+
+These actions created two files (without counting _.gitignore_): _.firebaserc_
+and _firebase.json_.
+
+### .firebaserc
+
+This is a resource configuration file. It contains an identifier for our
+project.
+
+### firebase.json
+
+This one can be modified to adjust the behavior of several firebase services.
+
+## Serving
+
+To run the app locally:
+
+```
+firebase serve
+```
+
+or
+
+```
+firebase emulators:start
+```
+
+## Deployment
+
+Run:
+
+```
+firebase deploy
+```
+
+It will take the files in the **public** folder and upload them to the firebase
+hosting server.
+
+## Authentication
+
+In the firebase console, go to the **Authentication** tab. You can manually add
+users, or you can also enable some sign-in methods.
+
+For this project, we will use Google authentication method.
+
+Add a few elements in the HTML (see _authentication_ comments).
+
+After doing, we move on to the .js and get the Auth SDK and enable 'Sign in with
+Google'.
