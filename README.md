@@ -69,23 +69,17 @@ This one can be modified to adjust the behavior of several firebase services.
 
 To run the app locally:
 
-```
-firebase serve
-```
+`firebase serve`
 
 or
 
-```
-firebase emulators:start
-```
+`firebase emulators:start`
 
 ## Deployment
 
 Run:
 
-```
-firebase deploy
-```
+`firebase deploy`
 
 It will take the files in the **public** folder and upload them to the firebase
 hosting server.
@@ -101,3 +95,57 @@ Add a few elements in the HTML (see _authentication_ comments).
 
 After doing, we move on to the .js and get the Auth SDK and enable 'Sign in with
 Google'.
+
+## Firestore
+
+NoSQL document oriented database segmented in collections.
+
+Add some HTML to show the contents from the firestore database.
+
+Then in the JavaScript, create a reference to the firestore database:
+
+`const db = firebase.firestore()`
+
+When accessing data from the database in real time, two things are needed:
+
+1. A reference to the document or collection.
+2. Because we are reading data in real time, our front-end will react to changes
+   in the database. This means we will be subscribed to a stream of changes that
+   happen to the database. We need to be able when to stop listening to those
+   changes, hence we create another variable for that (let's call it
+   _unsubscribe_)
+
+Follow along with the changes in the JavaScript under the comment **Firestore**.
+
+## Security
+
+Even though in the Javascript we are only retrieving the data created by the
+logged in user, that is not secure at all. Somebody else still has access to
+absolutely everything in the database.
+
+Full-stack security rules are critical! Go to **Rules** tab from the Firestore
+console.
+
+First, to secure the entire database:
+
+```
+match /{document=**} {
+  allow read, write: if false;
+}
+```
+
+Things will be allowed selectively depending on where they are needed. Then we
+reference the things collection and add the following:
+
+```
+match /things/{docId} {
+  allow write: if request.auth.uid == request.resource.data.uid;
+  allow read: if request.auth.uid == resource.data.uid;
+}
+```
+
+The `request.auth.uid` element refers to the logged in user present in the
+request sent to firebase. The `request.resource.data` element refers to the
+resource we want to create, which is part of the request sent to firebase. In
+the read part, the same applies, only that `resource.data` is a reference to the
+element that the front-end is trying to read.
