@@ -149,3 +149,18 @@ request sent to firebase. The `request.resource.data` element refers to the
 resource we want to create, which is part of the request sent to firebase. In
 the read part, the same applies, only that `resource.data` is a reference to the
 element that the front-end is trying to read.
+
+In the end, it was made such that users can see who has what, users can add
+items to their own collection, and users can delete items only from their
+collection. For that, the previously mentioned rules were modified to:
+
+```
+match /things/{docId} {
+  allow write: if request.auth.uid == request.resource.data.uid;
+  allow delete: if request.auth.uid == resource.data.uid;
+  allow read: if request.auth.uid != null;
+}
+```
+
+**NOTE**: when deleting, we are checking against `resource.data.uid`, because we
+are trying to delete an element already present in the database.
