@@ -87,7 +87,12 @@ auth.onAuthStateChanged((user) => {
         //the querySnapshot object contains an array of documents that we can
         //use to update the UI with the most recent data
         const items = querySnapshot.docs.map((doc) => {
-          return `<li>${doc.data().name} (${doc.data().userDisplayName})</li>`;
+          return new OwnThing(
+            doc.data().name,
+            doc.data().userDisplayName,
+            doc.id
+          ).toString();
+          // return `<li>${doc.data().name} (${doc.data().userDisplayName})</li>`;
         });
 
         thingsList.innerHTML = items.join('\n');
@@ -111,3 +116,24 @@ auth.onAuthStateChanged((user) => {
     unsubscribeFromAllChanges && unsubscribeFromAllChanges();
   }
 });
+
+class OwnThing {
+  constructor(name, userDisplayName, id) {
+    this.name = name;
+    this.userDisplayName = userDisplayName;
+    this.id = id;
+  }
+
+  toString() {
+    return `<li class="d-flex justify-content-between align-content-center p-2">
+    <p>${this.name} (${this.userDisplayName}) </p>
+    <button class="btn btn-danger" onclick="deleteThing(\'${this.id}\')">
+      &times;
+    </button>
+    </li>`;
+  }
+}
+
+function deleteThing(id) {
+  db.collection('things').doc(id).delete();
+}

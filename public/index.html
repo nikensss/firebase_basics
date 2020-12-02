@@ -44,7 +44,7 @@
 
     <!-- authentication -->
     <section id="whenSignedOut">
-      <button id="signInBtn" class="btn btn-primary">
+      <button id="signInBtn" class="btn btn-primary m-4">
         Sign in with Google
       </button>
     </section>
@@ -52,17 +52,23 @@
     <!-- authentication -->
     <section id="whenSignedIn" hidden="true">
       <div id="userDetails"></div>
-      <button id="signOutBtn" class="btn btn-primary">Sign out</button>
+      <button id="signOutBtn" class="btn btn-primary m-4">Sign out</button>
     </section>
 
     <!-- firestore data -->
     <section>
-      <button id="createThing" class="btn btn-success">
+      <button id="createThing" class="btn btn-success m-4">
         Create random thing!
       </button>
       <div class="d-flex flex-column flex-lg-row">
-        <ul id="thingsList"></ul>
-        <ul id="allThingsList"></ul>
+        <div class="ownThings">
+          <p>My things</p>
+          <ul id="thingsList"></ul>
+        </div>
+        <div class="completeList">
+          <p>Complete list</p>
+          <ul id="allThingsList"></ul>
+        </div>
       </div>
     </section>
     <script src="app.js" defer></script>
